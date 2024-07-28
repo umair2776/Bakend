@@ -1,0 +1,21 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+.main{
+    background-color: #E6007e;
+    color: #FFFFFF;
+    display: flex;
+    justify-content: space-between;
+    height: 40px;
+}
+.logo{
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+.logo img{
+    height: 50px;
+    width: 100px;
+}
