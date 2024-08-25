@@ -2,18 +2,19 @@ import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import countryList from 'react-select-country-list';
+import axios from 'axios';
 
 const Signup = () => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         phone: '',
-        country: '',  // Fixed the typo here
+        country: '',
         password: '',
-        confirmPassword: ''  // Fixed the typo here
+        confirmPassword: ''
     });
-    const navigate=useNavigate();
 
+    const navigate = useNavigate();
     const options = useMemo(() => countryList().getData(), []);
     const { name, email, phone, country, password, confirmPassword } = formData;
 
@@ -22,20 +23,33 @@ const Signup = () => {
     };
 
     const handleCountryChange = (selectedOption) => {
-        setFormData({ ...formData, country: selectedOption });
+        setFormData({ ...formData, country: selectedOption ? selectedOption.value : "" });
     };
 
-const signHandle=(e)=>{
-    e.preventDefault();
-    if(password!==confirmPassword){
-        alert(`Password does not match`)
-    }
-    else{
-        console.log(formData);
-        navigate("/")
-    }
+    const signHandle = async (e) => {
+        e.preventDefault();
 
-}
+        // Ensure that the passwords match before making the API request
+        if (password !== confirmPassword) {
+            alert("Password does not match");
+            return;
+        }
+
+        try {
+            // Making the API request
+            const response = await axios.post("http://localhost:9000/api/admin/user/register", formData);
+            console.log(response);
+
+            // On successful registration
+            alert("User registration successful");
+            navigate("/");  // Redirect to the homepage or another page
+        } catch (error) {
+            // Handle any errors that occur during the registration process
+            console.error("Registration error:", error);
+            alert("Registration failed. Please try again.");
+        }
+    };
+
     return (
         <form onSubmit={signHandle}>
             <div className='d-flex justify-content-center flex-column align-items-center'>
@@ -51,10 +65,8 @@ const signHandle=(e)=>{
                 <label>Country:</label>
                 <Select 
                     options={options} 
-                    value={country} 
+                    value={options.find(option => option.value === country)} 
                     onChange={handleCountryChange} 
-                    getOptionLabel={option => option.label}
-                    getOptionValue={option => option.value}
                 />
                 
                 <label>Password:</label>
@@ -63,7 +75,7 @@ const signHandle=(e)=>{
                 <label>Confirm Password:</label>
                 <input type='password' name='confirmPassword' value={confirmPassword} onChange={onChange} />
                 
-                <button className='btn btn-success mt-3'>Signup</button>
+                <button className='btn btn-success mt-3' type='submit'>Register</button>
             </div>
         </form>
     );

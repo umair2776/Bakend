@@ -19,6 +19,9 @@ import Fragrances from "./pages/Fragrances";
 import  'bootstrap/dist/css/bootstrap.css';
 import ProductDescription from "./pages/ProductDescription";
 import Signup from "./pages/Signup";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import AddProduct from "./pages/AddProduct";
 function App() {
   return (
     <>
@@ -34,6 +37,10 @@ function App() {
     <Route path="/fragrances" element={<Fragrances/>}/>
     <Route path="/products/:id" element={<ProductDescription/>}/>
     <Route path="/signup" element={<Signup/>}/>
+    <Route path="/login" element={<Login/>}/>
+    <Route path="/dashboard" element={<Dashboard/>}/>
+    <Route path="/add" element={<AddProduct/>}/>
+
 
   </Routes>
       </>
